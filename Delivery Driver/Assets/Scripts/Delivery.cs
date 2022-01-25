@@ -6,8 +6,12 @@ public class Delivery : MonoBehaviour
 {
     private bool hasPackage;
     [SerializeField] float destroyDelay = 0.5f;
-    private void Start() {
-        Debug.Log(hasPackage);
+    [SerializeField] Color32 hasPackageColor = new Color32 (255, 1 , 1, 255);
+    [SerializeField] Color32 noPackageColor = new Color32 (255, 255 , 255, 255);
+
+    SpriteRenderer spriteRenderer;
+    void Start() {
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
     void OnCollisionEnter2D(Collision2D other) {
         Debug.Log("Ouch!");
@@ -18,6 +22,7 @@ public class Delivery : MonoBehaviour
         if(other.tag == "Package" && !hasPackage){
             Debug.Log("Package picked up");
             hasPackage = true;
+            spriteRenderer.color = hasPackageColor;
             Destroy(other.gameObject, destroyDelay);
         } 
 
@@ -25,6 +30,7 @@ public class Delivery : MonoBehaviour
         if(other.tag == "Customer" && hasPackage){
             Debug.Log("Package Delivered");
             hasPackage = false;
+            spriteRenderer.color = noPackageColor;
         } 
     }
 }
